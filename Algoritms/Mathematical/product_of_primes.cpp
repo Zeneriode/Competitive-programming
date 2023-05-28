@@ -10,7 +10,6 @@ using namespace std;
 class Solution{
  public:
     long long primeProduct(long long L, long long R){
-        // code here
         long long int x = 0, y = 1;;
         for(long long int j = L; j <= R; ++j){
             if (j == 2){

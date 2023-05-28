@@ -32,7 +32,6 @@ class Solution {
 
  public:
     long long findMaxSubsetSum(int N, vector<int> &A) {
-        // code here
         vector <int> vec(N, 0);
         vec[0] = A[0];
         vec[1] = max(A[1], A[0] + A[1]);

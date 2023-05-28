@@ -6,7 +6,6 @@ using namespace std;
 class Solution {
  public:
     int kThSmallestFactor(int N , int K) {
-        // code here
         int x = 0, i = 0;
         while(x < K && i <= N){
             i += 1;
