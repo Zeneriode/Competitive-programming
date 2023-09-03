@@ -4,4 +4,4 @@
 
 ---
 
-Над этим репозиторием работает [Дух](https://github.com/orgs/Zeneriode/people/FedorKatta)
+Над этим репозиторием работает [Дух](https://github.com/FedorKatta)
