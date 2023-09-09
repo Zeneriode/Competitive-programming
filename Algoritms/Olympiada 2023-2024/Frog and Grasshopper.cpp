@@ -18,7 +18,7 @@ int main() {
 #endif
 
     int t = 1;
-//    /*is Single Test case?*/ cin >> t;
+    //    /*is Single Test case?*/ cin >> t;
     while (t--) {
         solve();
         cout << "\n";
@@ -29,27 +29,17 @@ int main() {
 }
 
 void solve() {
-    int m, n, x = 0;
-    cin >> n >> m;
-    vector <int> vec;
-    int y = n;
-    while(x < m){
-        x += y;
-        if(x < m){
-            vec.push_back(y);
-        }
-        y -= 1;
-        if(y == -1){
-            cout << 0;
-            return;
-        }
+    int n, ans = 0;
+    cin >> n;
+    int x = 1, y = n;
+    if(n == 2){
+        cout << -1;
+        return;
     }
-    y += 1;
-    x -= y;
-    if(m - x > 0) {
-        vec.push_back(m - x);
+    while(x < y){
+        x += 3;
+        y -= 2;
+        ans += 1;
     }
-    for(int i = 0; i < vec.size(); ++i){
-        cout << vec[i] << "\n";
-    }
+    cout << ans;
 }
