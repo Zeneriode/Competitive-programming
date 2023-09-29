@@ -29,17 +29,18 @@ int main() {
 }
 
 void solve() {
-    int n, ans = 0;
+    float n;
     cin >> n;
-    int x = 1, y = n;
-    if(n == 2){
+//    на расстоянии меньше 3 клеток изначально - не могут
+    if(n <= 2 && n != 1) {
         cout << -1;
         return;
     }
-    while(x < y){
-        x += 3;
-        y -= 2;
-        ans += 1;
+    if(n == 1){
+        cout << 0;
+        return;
     }
-    cout << ans;
+    n = ceil(n / 5);
+
+    cout << n;
 }

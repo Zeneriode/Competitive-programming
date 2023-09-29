@@ -28,64 +28,75 @@ int main() {
     return 0;
 }
 
-void solve() {
-    int m, n, x = 0, ans = 0, max_x = 0;
+void solve(){
+    int m, n, temp;
     cin >> n >> m;
-    int matrix[n][m];
-    for(int i = 0; i < n; ++i){
-        if(n % 2 == 0) {
-            if (i >= n / 2) {
-                x -= 1;
-            }
-        }
-        for(int j = 0; j < m; ++j){
-            if(x > 0){
-                matrix[i][j] = matrix[i - 1][j];
-                if(j < m - x && j >= x){
-                    matrix[i][j] = x;
-                }
-            }
-            else {
-                matrix[i][j] = 0;
-            }
-        }
-        if(n % 2 == 0) {
-            if (i < n / 2) {
-                x += 1;
-            }
-        }
-        else{
-            if (i < n / 2) {
-                x += 1;
-            }
-            if(i >= n / 2){
-                x -= 1;
-            }
-        }
+    if(n < m){
+        temp = m;
+        m = n;
+        n = temp;
     }
-    for(int i = 0; i < n; ++i){
-        for(int j = 0; j < m; ++j) {
-            if(matrix[i][j] > max_x){
-                max_x = matrix[i][j];
-            }
-        }
+
+    if(n & 1 && m & 1) {
+        cout << n - m + 1;
+    } else if(!(n & 1) && !(m & 1)) {
+        cout << (n - m) * 2 + 4;
+    } else {
+        cout << (n - m + 2) * 2;
     }
-    for(int i = 0; i < n; ++i){
-        for(int j = 0; j < m; ++j) {
-            if(matrix[i][j] == max_x){
-                ans += 1;
-            }
-        }
-    }
-    cout << ans;
 }
 
-////if((n % 2 != 0 && m % 2 == 0) || (n % 2 == 0 && m % 2 != 0)){
-////    cout << 2 << "\n";
-////}
-////else if(m % 2 == 0 && n % 2 == 0){
-////    cout << 4 << "\n";
-////}
-////else{
-////    cout << 1 << "\n";
-////}
+//void solve() {
+//    int m, n, x = 0, ans = 0, max_x = 0;
+//    cin >> n >> m;
+//    int matrix[n][m];
+//
+//    for(int i = 0; i < n; ++i){
+//        if(n % 2 == 0) {
+//            if (i >= n / 2) {
+//                x -= 1;
+//            }
+//        }
+//        for(int j = 0; j < m; ++j){
+//            if(x > 0){
+//                matrix[i][j] = matrix[i - 1][j];
+//                if(j < m - x && j >= x){
+//                    matrix[i][j] = x;
+//                }
+//            }
+//            else {
+//                matrix[i][j] = 0;
+//            }
+//        }
+//        if(n % 2 == 0) {
+//            if (i < n / 2) {
+//                x += 1;
+//            }
+//        }
+//        else{
+//            if (i < n / 2) {
+//                x += 1;
+//            }
+//            if(i >= n / 2){
+//                x -= 1;
+//            }
+//        }
+//    }
+//
+//    for(int i = 0; i < n; ++i){
+//        for(int j = 0; j < m; ++j) {
+//            if(matrix[i][j] > max_x){
+//                max_x = matrix[i][j];
+//            }
+//        }
+//    }
+//
+//    for(int i = 0; i < n; ++i){
+//        for(int j = 0; j < m; ++j) {
+//            if(matrix[i][j] == max_x){
+//                ans += 1;
+//            }
+//        }
+//    }
+//    cout << ans;
+//}

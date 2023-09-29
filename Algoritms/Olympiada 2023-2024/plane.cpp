@@ -29,26 +29,15 @@ int main() {
 }
 
 void solve() {
-    long long m, n;
-    cin >> n >> m;
+    float n;
+    cin >> n;
 
-    if((n + 1) * n / 2 < m){
-        cout << 0;
-        return;
+    if(n > 6){
+        n -= 6;
+    cout << ceil(n / 4) + 1;
     }
 
-    while (m > 0) {
-        m -= n;
-        if (m < 0) {
-            cout << m + n;
-            return;
-        }
-
-        if (!m) {
-            cout << n;
-            return;
-        }
-
-        cout << n-- << '\n';
+    else{
+        cout << 1;
     }
 }
