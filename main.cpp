@@ -29,27 +29,5 @@ int main() {
 }
 
 void solve() {
-    int m, n, x = 0;
-    cin >> n >> m;
-    vector <int> vec;
-    int y = n;
-    while(x < m){
-        x += y;
-        if(x < m){
-            vec.push_back(y);
-        }
-        y -= 1;
-        if(y == -1){
-            cout << 0;
-            return;
-        }
-    }
-    y += 1;
-    x -= y;
-    if(m - x > 0) {
-        vec.push_back(m - x);
-    }
-    for(int i = 0; i < vec.size(); ++i){
-        cout << vec[i] << "\n";
-    }
+
 }
