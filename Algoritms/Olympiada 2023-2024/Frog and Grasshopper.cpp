@@ -18,7 +18,7 @@ int main() {
 #endif
 
     int t = 1;
-//    /*is Single Test case?*/ cin >> t;
+    //    /*is Single Test case?*/ cin >> t;
     while (t--) {
         solve();
         cout << "\n";
@@ -29,5 +29,18 @@ int main() {
 }
 
 void solve() {
+    float n;
+    cin >> n;
+//    на расстоянии меньше 3 клеток изначально - не могут
+    if(n <= 2 && n != 1) {
+        cout << -1;
+        return;
+    }
+    if(n == 1){
+        cout << 0;
+        return;
+    }
+    n = ceil(n / 5);
 
+    cout << n;
 }

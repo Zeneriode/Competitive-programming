@@ -18,7 +18,7 @@ int main() {
 #endif
 
     int t = 1;
-//    /*is Single Test case?*/ cin >> t;
+    //    /*is Single Test case?*/ cin >> t;
     while (t--) {
         solve();
         cout << "\n";
@@ -29,5 +29,15 @@ int main() {
 }
 
 void solve() {
+    float n;
+    cin >> n;
 
+    if(n > 6){
+        n -= 6;
+    cout << ceil(n / 4) + 1;
+    }
+
+    else{
+        cout << 1;
+    }
 }

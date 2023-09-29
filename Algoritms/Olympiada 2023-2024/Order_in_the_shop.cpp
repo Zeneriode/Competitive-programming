@@ -18,7 +18,7 @@ int main() {
 #endif
 
     int t = 1;
-//    /*is Single Test case?*/ cin >> t;
+    //    /*is Single Test case?*/ cin >> t;
     while (t--) {
         solve();
         cout << "\n";
@@ -29,5 +29,26 @@ int main() {
 }
 
 void solve() {
+    long long m, n;
+    cin >> n >> m;
 
+    if((n + 1) * n / 2 < m){
+        cout << 0;
+        return;
+    }
+
+    while (m > 0) {
+        m -= n;
+        if (m < 0) {
+            cout << m + n;
+            return;
+        }
+
+        if (!m) {
+            cout << n;
+            return;
+        }
+
+        cout << n-- << '\n';
+    }
 }

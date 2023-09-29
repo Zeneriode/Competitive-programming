@@ -4,7 +4,7 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-
+using ull = unsigned long long;
 void solve();
 
 int main() {
@@ -18,7 +18,7 @@ int main() {
 #endif
 
     int t = 1;
-//    /*is Single Test case?*/ cin >> t;
+    //    /*is Single Test case?*/ cin >> t;
     while (t--) {
         solve();
         cout << "\n";
@@ -29,5 +29,14 @@ int main() {
 }
 
 void solve() {
+    ull n, m;
+    cin >> n >> m;
+    ull k = (min(n, m) + 1) / 2;
+    ull x = (n + m + n + m - 4 * (k - 1)) / 2 * k;
 
+    if (n - m != 1 || min(n, m) & 1) {
+        x--;
+    }
+
+    cout << x;
 }
