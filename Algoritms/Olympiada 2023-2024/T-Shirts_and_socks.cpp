@@ -29,12 +29,36 @@ int main() {
 }
 
 void solve() {
-    long long a, b, c, d;
+    long long a, b, c, d, ans_1 = 0, ans_2 = 0, x = 0, y = 0;
     cin >> a >> b >> c >> d;
     if((a - b) + (c - d) > (b - a) + (d - c)){
-        cout << b + 1 << " " << d + 1;
+        ans_1 += b + 1 + d + 1;
     }
     else{
-        cout << a + 1 << " " << c + 1;
+        ans_1 += a + 1 + c + 1;
+        x = 1;
+    }
+    if(max(a, b) + 1 < max(c, d) + 1){
+        ans_2 += max(a, b) + 1 + 1;
+    }
+    else{
+        ans_2 += max(c, d) + 1 + 1;
+        y = 1;
+    }
+    if(ans_1 < ans_2){
+        if(x == 0){
+            cout << b + 1 << " " << d + 1;
+        }
+        else{
+            cout << a + 1 << " " << c + 1;
+        }
+    }
+    else{
+        if(y == 0){
+            cout << max(a, b) + 1 << " " << 1;
+        }
+        else{
+            cout << max(c, d) + 1 << " " << 1;
+        }
     }
 }
