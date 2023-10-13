@@ -53,11 +53,10 @@ void solve() {
             cout << a + 1 << " " << c + 1;
         }
     }
-    else{
-        if(y == 0){
+    else {
+        if (y == 0) {
             cout << max(a, b) + 1 << " " << 1;
-        }
-        else{
+        } else {
             cout << max(c, d) + 1 << " " << 1;
         }
     }

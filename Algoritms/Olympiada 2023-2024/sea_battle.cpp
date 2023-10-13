@@ -29,15 +29,45 @@ int main() {
 }
 
 void solve() {
-    int n, m;
+    int n, m, temp;
     cin >> n >> m;
-    vector <int> vec_left;
-    vector <int> vec_right;
+
+    vector <int> vec_left(n, 0);
+    vector <int> vec_right(m, 0);
+    vector <int> time;
+    vector <int> pos;
+
     for(int i = 0; i < n; ++i){
-        cin >> vec_left[i];
+        cin >> temp;
+        vec_left[i] = temp;
     }
     for(int i = 0; i < m; ++i){
-        cin >> vec_right[i];
+        cin >> temp;
+        vec_right[i] = temp;
+    }
+    int i = 0, j = 0;
+
+    while(i < n){
+        if(j < m && vec_right[j] < vec_left[i]){
+            pos.push_back(vec_right[j] + ((vec_left[i] - vec_right[j]) / 2));
+            time.push_back((vec_left[i] - vec_right[j]) / 2);
+            i += 1;
+            j += 1;
+        }
+        else{
+            pos.push_back(vec_left[i]);
+            time.push_back(0);
+            i += 1;
+        }
     }
 
+    while(j < m){
+        pos.push_back(vec_right[j]);
+        time.push_back(0);
+        j += 1;
+    }
+
+    for(int i = 0; i < pos.size(); ++i){
+        cout << pos[i] << " " << time[i] << "\n";
+    }
 }
