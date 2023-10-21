@@ -33,13 +33,12 @@ void solve() {
     cin >> n >> m;
     long long a = 1, d = 1, ans = 0;
     while(d <= m){
-        if((a + (n - 1) * d) <= m){
-            ans += 1;
-            a += 1;
+        if((n - 1) * d <= m){
+            ans += m - (n - 1) * d;
+            d += 1;
         }
         else{
             d += 1;
-            a = 1;
         }
     }
     cout << ans;

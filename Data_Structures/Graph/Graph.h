@@ -41,11 +41,44 @@ class Graph : public GraphInterface<V, E> {
     }
 
     void remove_edge(E edge) override {
-//       ДЗ
+        auto index = find(_edges.begin(), _edges.end(), edge);
+        _edges.erase(index);
+    }
+
+    int MinDist(int distance[], bool visit[]){
+        int minimum = INT_MAX, ind;
+        for(int i = 0; i < _edges.size(); ++i){
+            if(visit[i] == false && distance[i] <= minimum){
+                minimum = distance[i];
+                ind = i;
+            }
+        }
+        return ind;
     }
 
     V *path(V v1, V v2) override {
-//        ДЗ - Поиск в ширину
+        int distance[_edges.size()];
+        bool visit[_edges.size()];
+        for(int i = 0; i < _edges.size(); i++)
+        {
+            distance[i] = INT_MAX;
+            visit[i] = false;
+        }
+        distance[v1] = 0;
+        for(int i = 0; i < _edges.size(); ++i){
+            int m = MinDist(distance, visit);
+            visit[m] = true;
+            for(int j = 0; j < _edges.size(); ++j){
+                if(!visit[j] && _edges[m][j] && distance[m] != INT_MAX && distance[m]+_edges[m][j] < distance[j]){
+                    distance[j] = distance[m] + _edges[m][j];
+                }
+            }
+        }
+        for(int i = 0; i < _edges.size(); i++){
+            char str = 65 + i;
+            cout << str << "\t\t\t" << distance[i] << endl;
+        }
+
         return nullptr;
     }
 };
