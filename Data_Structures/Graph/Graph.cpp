@@ -5,23 +5,14 @@
 #include <bits/stdc++.h>
 #include "Graph.h"
 
-struct Road {
-    string city1;
-    string city2;
-    int length;
-    Road(string city1, string city2, int length) {
-        this->city1 = city1;
-        this->city2 = city2;
-        this->length = length;
-    }
-    Road(string city1, string city2) {
-        this->city1 = city1;
-        this->city2 = city2;
-        this->length = 1;
-    }
-};
 
 int main() {
+    #ifndef ONLINE_JUDGE
+        freopen("input.txt", "r", stdin);
+        freopen("error.txt", "w", stderr);
+        freopen("output.txt", "w", stdout);
+    #endif
+
     // Пару городов
     string msk = "Moscow";
     string piter = "Saint Petersburg";
@@ -44,7 +35,6 @@ int main() {
     g.edges()[1].length = 680;
     g.edges()[2].length = 1200;
     g.edges()[3].length = 42;
-
     // Просто должно работать "Moscow Piter"
     for (string city : g.path(msk, piter)) {
         cout << city << " ";

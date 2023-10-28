@@ -27,7 +27,7 @@ class GraphInterface {
     virtual void remove_vertex(V vertex) = 0;
     virtual void remove_edge(E edge) = 0;
 
-    virtual V *path(V v1, V v2) = 0;
+    virtual vector<V> path(V v1, V v2) = 0;
 };
 
 #endif //COMPETITIVE_PROGRAMMING_GRAPH_INTERFACE_H
