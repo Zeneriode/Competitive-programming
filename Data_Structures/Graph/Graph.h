@@ -10,6 +10,7 @@
 #include <vector>
 
 using namespace std;
+typedef pair<int, string> psi;
 
 struct Road {
     string city1;
@@ -27,10 +28,10 @@ struct Road {
     }
 };
 
-template<typename V, typename E>
-class Graph : public GraphInterface<V, E> {
+template<typename V>
+class Graph : public GraphInterface<V, Road> {
     vector<V> _vertexes;
-    vector<E> _edges;
+    vector<Road> _edges;
 
  public:
     Graph() = default;
@@ -39,7 +40,7 @@ class Graph : public GraphInterface<V, E> {
         return _vertexes;
     }
 
-    vector<E> edges() override {
+    vector<Road> edges() override {
         return _edges;
     }
 
@@ -48,7 +49,7 @@ class Graph : public GraphInterface<V, E> {
     }
 
     void add_edge(V v1, V v2) override {
-        _edges.push_back(E(v1, v2));
+        _edges.push_back(Road(v1, v2));
     }
 
     void remove_vertex(V vertex) override {
@@ -56,122 +57,95 @@ class Graph : public GraphInterface<V, E> {
         if (index != _vertexes.end()) _vertexes.erase(index);
     }
 
-    void remove_edge(E edge) override {
+    void remove_edge(Road edge) override {
 //        auto index = find(_edges.begin(), _edges.end(), edge);
 //        _edges.erase(index);
     }
 
-    vector <V> path(V v1, V v2) override {
-        unordered_set<V> visited;  // Множество посещённых городов
-        vector<Road> visited_edges;  // Множество посещённых рёбер
-        vector<V> path; // Путь от одной точки до другой
-        queue<V> next; // Очередь вершин которые нужно пройти после текущей
-        next.push(v1); // Добавление первой вершины
-        while (!next.empty()) { // Пока у вершины не будет соседствующих вершин
-            V actual = next.back(); // Вытаскиваем вершину из очереди
+    vector<V> djkst(V v1, V v2) {
+        unordered_map<V, vector<V>> paths;
+        vector<V> start(1, v1);
+        paths[v1] = start;
+
+        unordered_set<V> path_exist;
+        path_exist.insert(v1);
+
+        queue<V> next;
+        next.push(v1);
+
+        unordered_set<V> visited;
+
+        while (!next.empty()) {
+            V actual = next.front();
             next.pop();
-            if (visited.contains(actual)) // Если уже прошлись по этой вершине, то скип
-                continue;
+
+            if (visited.contains(actual)) continue;
             visited.insert(actual);
-            if (actual == v2) { // Если мы дошли до искомого элемента, заканчиваем цикл
-                break;
-            }
-            for (E edge : this->_edges) {                                     // Проход по всем ребрам
-                if (edge.city1 == actual && !visited.contains(edge.city2)) {  // Если есть путь до вершины, то добавляем её в очередь (идём дальше)
-                    next.push(edge.city2);
-                    visited_edges.push_back(edge);
-                } else if (edge.city2 == actual && !visited.contains(edge.city1)) {
-                    next.push(edge.city1);
-                    visited_edges.push_back(edge);
+
+            for (Road edge : this->_edges) {
+                if (edge.city1 == actual) {
+                    V neigh = edge.city2;
+
+                    if (!path_exist.contains(neigh) || paths[neigh].size() > paths[actual].size() + 1) {
+                        paths[neigh] = paths[actual];
+                        paths[neigh].push_back(neigh);
+                        next.push(neigh);
+                        if (visited.contains(neigh)) visited.erase(neigh);
+                        if (!path_exist.contains(neigh)) path_exist.insert(neigh);
+                    }
+                } else if (edge.city2 == actual) {
+                    V neigh = edge.city1;
+
+                    if (!path_exist.contains(neigh) || paths[neigh].size() > paths[actual].size() + 1) {
+                        paths[neigh] = paths[actual];
+                        paths[neigh].push_back(neigh);
+                        next.push(neigh);
+                        if (visited.contains(neigh)) visited.erase(neigh);
+                        if (!path_exist.contains(neigh)) path_exist.insert(neigh);
+                    }
                 }
             }
         }
-        visited.clear();
-        V next_vertex = v2; // Текущая вершина которая будет записана в путь
-        while (!visited.contains(v1)) {
-            for (E edge : visited_edges) {   // Проход по всем ребрам
-                if (edge.city1 == next_vertex) { // Если нашли ребро с текущей вершиной, то переходим к новой вершине
-                    visited.insert(next_vertex);
-                    next_vertex = edge.city2;
-                    break;
-                } else if (edge.city2 == next_vertex) {
-                    visited.insert(next_vertex);
-                    next_vertex = edge.city1;
-                    break;
+        return paths[v2];
+    }
+
+    vector<V> dfs(V actual, V v2, set<V> visited, vector<V> path) {
+        path.push_back(actual);
+        if (actual == v2) return path;
+
+        if (visited.contains(actual)) {
+            path.pop_back();
+            return path;
+        }
+
+        visited.insert(actual);
+
+        for (Road edge : this->_edges) {
+            if (edge.city1 == actual) {
+                vector<V> new_path = dfs(edge.city2, v2, visited, path);
+                if (new_path.size() == path.size()) {
+                    continue;
                 }
+                return new_path;
+            } else if (edge.city2 == actual) {
+                vector<V> new_path = dfs(edge.city1, v2, visited, path);
+                if (new_path.size() == path.size()) {
+                    continue;
+                }
+                return new_path;
             }
         }
-        for (V v : visited) {
-            path.push_back(v);
-        }
+        path.pop_back();
         return path;
     }
-};
 
-//    vector<V> path(V v1, V v2) override {
-//        unordered_set<V> visited;  // Множество посещённых городов
-//        vector<Road> visited_edges;  // Множество посещённых рёбер
-//        vector<V> path; // Путь от одной точки до другой
-//
-//        priority_queue<pair<int, V>, vector<pair<int, V>>, greater<pair<int, V>>> next; // Очередь вершин которые нужно пройти после текущей
-//        next.push(make_pair(0, v1)); // Добавление первой вершины
-//        unordered_map<V, V> previous;
-//
-//        while (!next.empty()) { // Пока у вершины не будет соседствующих вершин
-//            V actual = next.top().second; // Вытаскиваем вершину из очереди
-//            next.pop();
-//
-//            if (visited.contains(actual)) // Если уже прошлись по этой вершине, то скип
-//                continue;
-//            visited.insert(actual);
-//
-//            if (actual == v2) { // Если мы дошли до искомого элемента, заканчиваем цикл
-//                break;
-//            }
-//
-//            for (E edge : this->_edges) {                                     // Проход по всем ребрам
-//                if (edge.city1 == actual && !visited.contains(edge.city2)) {
-//                    int newDistance = _edges[actual] + edge.weight;
-//                    if (newDistance < _edges[edge.city2]) {  // Если есть путь до вершины, то добавляем её в очередь (идём дальше)
-//                        next.push(make_pair(newDistance, edge.city2));
-//                        previous[edge.city2] = actual;
-//                        visited_edges.push_back(edge);
-//                    }
-//                } else if (edge.city2 == actual && !visited.contains(edge.city1)) {
-//                    int newDistance = _edges[actual] + edge.weight;
-//                    if (newDistance < _edges[edge.city1]) {
-//                        next.push(make_pair(newDistance, edge.city1));
-//                        previous[edge.city1] = actual;
-//                        visited_edges.push_back(edge);
-//                    }
-//                }
-//            }
-//        }
-//        visited.clear();
-//        V next_vertex = v2; // Текущая вершина которая будет записана в путь
-//        while (!visited.contains(v1)) {
-//            for (E edge : visited_edges) {   // Проход по всем ребрам
-//                if (edge.city1 == next_vertex) { // Если нашли ребро с текущей вершиной, то переходим к новой вершине
-//                    visited.insert(next_vertex);
-//                    next_vertex = edge.city2;
-//                    break;
-//                } else if (edge.city2 == next_vertex) {
-//                    visited.insert(next_vertex);
-//                    next_vertex = edge.city1;
-//                    break;
-//                }
-//            }
-//        }
-//        V nextVertex = v2;
-//        while (nextVertex != v1) {
-//            path.push_back(nextVertex);
-//            nextVertex = previous[nextVertex];
-//        }
-//        path.push_back(v1);
-//        reverse(path.begin(), path.end());
-//        return path;
-//    }
-//};
+    vector<V> path(V v1, V v2) override {
+        vector<V> path;
+        set<V> visited;
+
+        return dfs(v1, v2, visited, path);
+    }
+};
 
 
 #endif  //COMPETITIVE_PROGRAMMING_GRAPH_H
